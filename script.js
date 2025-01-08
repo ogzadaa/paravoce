@@ -2,6 +2,7 @@ document.getElementById("messageForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const messageInput = document.getElementById("messageInput");
 
+  // Enviar mensagem para o servidor
   const response = await fetch("/messages", {
     method: "POST",
     headers: {
