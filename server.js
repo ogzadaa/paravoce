@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -52,6 +53,11 @@ app.get("/mensagens", async (req, res) => {
 // Endpoint de verificação de saúde
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
+});
+
+// Rota para servir o arquivo index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // Iniciar o servidor
