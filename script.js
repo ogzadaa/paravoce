@@ -14,6 +14,8 @@ document.getElementById("messageForm").addEventListener("submit", async (e) => {
   if (response.ok) {
     messageInput.value = "";
     loadMessages();
+  } else {
+    console.error("Erro ao enviar mensagem:", response.statusText);
   }
 });
 
