@@ -7,54 +7,18 @@
     <title>Mensagens para Minha Namorada</title>
   </head>
   <body>
-    <header>
+    <div class="container">
       <h1>Mensagens para Minha Namorada</h1>
-    </header>
-    <main>
       <form id="messageForm">
-        <label for="message">Digite sua mensagem:</label>
-        <textarea id="message" rows="4" required></textarea>
-        <button type="submit">Enviar Mensagem</button>
+        <textarea
+          id="messageInput"
+          placeholder="Escreva sua mensagem aqui..."
+          required
+        ></textarea>
+        <button type="submit">Publicar Mensagem</button>
       </form>
       <div id="messages"></div>
-    </main>
+    </div>
     <script src="script.js"></script>
-    <script>
-      // Função para carregar mensagens do servidor
-      async function loadMessages() {
-        const response = await fetch("http://localhost:5000/mensagens");
-        const messages = await response.json();
-        const messagesDiv = document.getElementById("messages");
-        messagesDiv.innerHTML = "";
-        messages.forEach((msg) => {
-          const messageElement = document.createElement("p");
-          messageElement.textContent = msg.texto;
-          messagesDiv.appendChild(messageElement);
-        });
-      }
-
-      // Enviar mensagem
-      document
-        .getElementById("messageForm")
-        .addEventListener("submit", async function (event) {
-          event.preventDefault();
-          const messageInput = document.getElementById("message");
-          const messageText = messageInput.value;
-
-          await fetch("http://localhost:5000/mensagens", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ texto: messageText }),
-          });
-
-          messageInput.value = "";
-          loadMessages();
-        });
-
-      // Carregar mensagens ao iniciar
-      loadMessages();
-    </script>
   </body>
 </html>
