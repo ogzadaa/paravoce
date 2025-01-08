@@ -11,10 +11,13 @@ app.use(express.json());
 
 // Conexão com o MongoDB
 mongoose
-  .connect("mongodb://localhost:27017/mensagens", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    `mongodb+srv://ogzada:${process.env.DB_PASSWORD}@cluster0.fhrhs.mongodb.net/?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => console.log("Conectado ao MongoDB"))
   .catch((err) => console.error("Erro ao conectar ao MongoDB:", err));
 
@@ -44,6 +47,11 @@ app.get("/mensagens", async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
+});
+
+// Endpoint de verificação de saúde
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
 });
 
 // Iniciar o servidor
