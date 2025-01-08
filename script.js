@@ -28,6 +28,22 @@ async function loadMessages() {
   messages.forEach((message) => {
     const messageElement = document.createElement("div");
     messageElement.textContent = message.texto;
+
+    // Criar botão de exclusão
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Excluir";
+    deleteButton.onclick = async () => {
+      const deleteResponse = await fetch(`/mensagens/${message._id}`, {
+        method: "DELETE",
+      });
+      if (deleteResponse.ok) {
+        loadMessages(); // Recarregar mensagens após exclusão
+      } else {
+        console.error("Erro ao excluir mensagem:", deleteResponse.statusText);
+      }
+    };
+
+    messageElement.appendChild(deleteButton);
     messagesContainer.appendChild(messageElement);
   });
 }
