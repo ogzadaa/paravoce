@@ -1,24 +1,31 @@
-document.getElementById("messageForm").addEventListener("submit", (e) => {
+document.getElementById("messageForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const messageInput = document.getElementById("messageInput");
 
-  // Armazenar mensagem no localStorage
-  const messages = JSON.parse(localStorage.getItem("messages")) || [];
-  messages.push({ text: messageInput.value });
-  localStorage.setItem("messages", JSON.stringify(messages));
+  // Enviar mensagem para o servidor
+  const response = await fetch("/mensagens", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ texto: messageInput.value }),
+  });
 
-  messageInput.value = "";
-  loadMessages();
+  if (response.ok) {
+    messageInput.value = "";
+    loadMessages();
+  }
 });
 
-function loadMessages() {
-  const messages = JSON.parse(localStorage.getItem("messages")) || [];
+async function loadMessages() {
+  const response = await fetch("/mensagens");
+  const messages = await response.json();
   const messagesContainer = document.getElementById("messages");
   messagesContainer.innerHTML = "";
 
   messages.forEach((message) => {
     const messageElement = document.createElement("div");
-    messageElement.textContent = message.text;
+    messageElement.textContent = message.texto;
     messagesContainer.appendChild(messageElement);
   });
 }
