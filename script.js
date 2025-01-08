@@ -1,25 +1,18 @@
-document.getElementById("messageForm").addEventListener("submit", async (e) => {
+document.getElementById("messageForm").addEventListener("submit", (e) => {
   e.preventDefault();
   const messageInput = document.getElementById("messageInput");
 
-  // Enviar mensagem para o servidor
-  const response = await fetch("/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ text: messageInput.value }),
-  });
+  // Armazenar mensagem no localStorage
+  const messages = JSON.parse(localStorage.getItem("messages")) || [];
+  messages.push({ text: messageInput.value });
+  localStorage.setItem("messages", JSON.stringify(messages));
 
-  if (response.ok) {
-    messageInput.value = "";
-    loadMessages();
-  }
+  messageInput.value = "";
+  loadMessages();
 });
 
-async function loadMessages() {
-  const response = await fetch("/messages");
-  const messages = await response.json();
+function loadMessages() {
+  const messages = JSON.parse(localStorage.getItem("messages")) || [];
   const messagesContainer = document.getElementById("messages");
   messagesContainer.innerHTML = "";
 
