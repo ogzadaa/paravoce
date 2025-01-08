@@ -10,12 +10,13 @@ app.get("/", (req, res) => {
 
 // Middleware
 app.use(bodyParser.json());
-app.use(express.static(__dirname)); // Serve arquivos estáticos do diretório atual
+app.use(express.static("meu sit")); // Serve arquivos estáticos da pasta "meu sit"
 
 // Rota para obter mensagens
 app.get("/messages", (req, res) => {
-  fs.readFile("messages.json", (err, data) => {
+  fs.readFile(__dirname + "/messages.json", (err, data) => {
     if (err) {
+      console.error("Erro ao ler mensagens:", err); // Log do erro no console
       return res.status(500).send("Erro ao ler mensagens.");
     }
     res.json(JSON.parse(data));
@@ -25,18 +26,22 @@ app.get("/messages", (req, res) => {
 // Rota para publicar uma nova mensagem
 app.post("/messages", (req, res) => {
   const newMessage = req.body.message;
-  fs.readFile("messages.json", (err, data) => {
+  fs.readFile(__dirname + "/messages.json", (err, data) => {
     if (err) {
       return res.status(500).send("Erro ao ler mensagens.");
     }
     const messages = JSON.parse(data);
     messages.messages.push(newMessage);
-    fs.writeFile("messages.json", JSON.stringify(messages), (err) => {
-      if (err) {
-        return res.status(500).send("Erro ao salvar a mensagem.");
+    fs.writeFile(
+      __dirname + "/messages.json",
+      JSON.stringify(messages),
+      (err) => {
+        if (err) {
+          return res.status(500).send("Erro ao salvar a mensagem.");
+        }
+        res.status(201).send("Mensagem publicada com sucesso!");
       }
-      res.status(201).send("Mensagem publicada com sucesso!");
-    });
+    );
   });
 });
 
