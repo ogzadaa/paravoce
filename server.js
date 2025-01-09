@@ -53,6 +53,17 @@ app.get("/mensagens", async (req, res) => {
   }
 });
 
+// Rota para excluir uma mensagem
+app.delete("/mensagens/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Mensagem.findByIdAndDelete(id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 // Endpoint de verificação de saúde
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
