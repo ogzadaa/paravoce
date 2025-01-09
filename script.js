@@ -13,7 +13,7 @@ document.getElementById("messageForm").addEventListener("submit", async (e) => {
 
   if (response.ok) {
     messageInput.value = "";
-    loadMessages();
+    loadMessages(); // Atualiza as mensagens imediatamente
   } else {
     console.error("Erro ao enviar mensagem:", response.statusText);
   }
